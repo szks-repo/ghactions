@@ -19,38 +19,26 @@ jobs:
         run: echo "${{ inputs.app-environment }}:${{ inputs.task-name }}"
 
       - name: ブランチを決定
-        id: determine_branch
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const appEnv = '${{ inputs.app-environment }}'
-            let targetBranch = ''
-            switch(appEnv) {
-              case 'develop':
-                targetBranch = 'main'
-                break
-              case 'staging':
-                targetBranch = 'release'
-                break
-              case 'production':
-                targetBranch = 'main'
-                break
-              default:
-                throw new Error(`不明な環境: ${appEnv}`)
-            }
-            console.log({targetBranch})
+        id: select-branch
+        run: |
+          case "${{ inputs.app-environment }}" in
+            develop)
+              echo "branch=main" >> "$GITHUB_OUTPUT" 
+              ;;
+            staging)
+              echo "branch=release" >> "$GITHUB_OUTPUT" 
+              ;;
+            production)
+              echo "branch=main" >> "$GITHUB_OUTPUT" 
+              ;;
+            *)
+              echo "Invalid environment provided: ${{ inputs.app-environment }}"
+              exit 1
+              ;;
+          esac
 
-            return { branch: targetBranch }
-        
       - name: コードをチェックアウト
-        # run: echo "checkout to ${{ steps.determine_branch.outputs.branch }}"
-        uses: actions/github-script@v6
-        with:
-          script: |
-            console.log("check target branch")
-            console.log(JSON.stringify(${{ steps.determine_branch.outputs }}))
-            console.log(${{ steps.determine_branch.outputs.branch }})
-            console.log(JSON.stringify(${{ steps.determine_branch }}))
+        run: echo "checkout to ${{ steps.select-branch.outputs.branch }}"
         # uses: actions/checkout@v4
         # with:
         #   fetch-depth: 0
@@ -60,4 +48,3 @@ jobs:
         run: echo "body=${{ inputs.app-environment }}:${{ inputs.task-name }}" >> "${GITHUB_OUTPUT}"
     outputs:
       result: ${{ steps.echo-input.outputs.body }}
-
