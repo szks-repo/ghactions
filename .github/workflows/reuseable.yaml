@@ -48,9 +48,9 @@ jobs:
         with:
           script: |
             console.log("check target branch")
-            console.log(${{ steps.determine_branch.outputs }})
+            console.log(JSON.stringfy(${{ steps.determine_branch.outputs }}))
             console.log(${{ steps.determine_branch.outputs.branch }})
-            console.log(${{ steps.determine_branch }})
+            console.log(JSON.stringify(${{ steps.determine_branch }}))
         # uses: actions/checkout@v4
         # with:
         #   fetch-depth: 0
