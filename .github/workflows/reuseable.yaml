@@ -15,7 +15,40 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ inputs.app-environment }}:${{ inputs.task-name }}"
+      - name: Echo inputs
+        run: echo "${{ inputs.app-environment }}:${{ inputs.task-name }}"
+
+      - name: ブランチを決定
+        id: determine_branch
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const appEnv = '${{ inputs.app-environment }}'
+            let targetBranch = ''
+            switch(appEnv) {
+              case 'develop':
+                targetBranch = 'main'
+                break
+              case 'staging':
+                targetBranch = 'release'
+                break
+              case 'production':
+                targetBranch = 'main'
+                break
+              default:
+                throw new Error(`不明な環境: ${appEnv}`)
+            }
+            console.log({targetBranch})
+
+            return { branch: targetBranch }
+        
+      - name: コードをチェックアウト
+        run: echo "checkout to ${{ steps.determine_branch.outputs.branch }}"
+        # uses: actions/checkout@v4
+        # with:
+        #   fetch-depth: 0
+        #   ref: ${{ steps.determine_branch.outputs.branch }}
+
       - id: echo-input
         run: echo "body=${{ inputs.app-environment }}:${{ inputs.task-name }}" >> "${GITHUB_OUTPUT}"
     outputs:
