@@ -8,12 +8,17 @@ on:
           - 'RunTask1'
           - 'RunTask2'
           - 'RunTask3'
+      confirm-key:
+        type: string
+        required: false
+        description: 対応するキーを入力
 jobs:
   call:
     uses: ./.github/workflows/reuseable.yaml
     with:
       app-environment: develop
       task-name: ${{ inputs.task-name }}
+      confirm-key: ${{ inputs.confirm-key }}
   print:
     needs: [call]
     runs-on: ubuntu-latest
