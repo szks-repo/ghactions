@@ -4,7 +4,10 @@ on:
     inputs:
       task-name:
         type: choice
-        options: ${{ fromJSON(['RunTask1', 'RunTask2', 'RunTask3']) }}
+        options: 
+          - 'RunTask1'
+          - 'RunTask2'
+          - 'RunTask3'
 jobs:
   call:
     uses: ./.github/workflows/reuseable.yaml
