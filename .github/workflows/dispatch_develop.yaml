@@ -13,7 +13,7 @@ jobs:
     uses: ./.github/workflows/reuseable.yaml
     with:
       app-environment: develop
-      task-name: ${{ input.task-name }}
+      task-name: ${{ inputs.task-name }}
   print:
     needs: [call]
     runs-on: ubuntu-latest
