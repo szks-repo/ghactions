@@ -1,0 +1,14 @@
+name: Reuseable Workflows
+on:
+  workflow_call:
+    inputs:
+      app-environment:
+        type: string
+        default: develop
+        required: true
+        description: App Environment [development staging production]
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ inputs.app-environment }}
