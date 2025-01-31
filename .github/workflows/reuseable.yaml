@@ -45,6 +45,7 @@ jobs:
         #   ref: ${{ steps.determine_branch.outputs.branch }}
 
       - id: echo-input
-        run: echo "body=${{ inputs.app-environment }}:${{ inputs.task-name }}" >> "${GITHUB_OUTPUT}"
+        run: echo "body=${{ inputs.app-environment }}:${{ inputs.task-name }}" >> "$GITHUB_OUTPUT"
     outputs:
       result: ${{ steps.echo-input.outputs.body }}
+
