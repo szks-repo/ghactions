@@ -43,7 +43,14 @@ jobs:
             return { branch: targetBranch }
         
       - name: コードをチェックアウト
-        run: echo "checkout to ${{ steps.determine_branch.outputs.branch }}"
+        # run: echo "checkout to ${{ steps.determine_branch.outputs.branch }}"
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log("check target branch")
+            console.log(${{ steps.determine_branch.outputs }})
+            console.log(${{ steps.determine_branch.outputs.branch }})
+            console.log(${{ steps.determine_branch }})
         # uses: actions/checkout@v4
         # with:
         #   fetch-depth: 0
