@@ -1,0 +1,23 @@
+name: Call
+on: 
+  workflow_dispatch:
+    inputs:
+      task-name:
+        type: choice
+        options:
+          - RunTask1
+          - RunTask2
+          - RunTask1
+jobs:
+  call:
+    uses: ./.github/workflows/reuseable.yaml
+    with:
+      app-environment: develop
+      task-name: ${{ input.task-name }}
+  print:
+    needs: [call]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Result > ${MESSAGE}"
+        env:
+          MESSAGE:  ${{ needs.call.outputs.message }}
