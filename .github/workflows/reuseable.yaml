@@ -11,6 +11,9 @@ on:
         type: string
         required: true
         description: run task name
+defaults:
+  run: 
+    shell: bash
 jobs:
   comment:
     runs-on: ubuntu-latest
