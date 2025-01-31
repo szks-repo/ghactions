@@ -11,6 +11,9 @@ on:
         type: string
         required: true
         description: run task name
+      confirm-key:
+        type: string
+        required: false
 defaults:
   run: 
     shell: bash
@@ -19,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo inputs
-        run: echo "${{ inputs.app-environment }}:${{ inputs.task-name }}"
+        run: echo "${{ inputs.app-environment }}:${{ inputs.task-name }}:${{ inputs.confirm-key }}"
 
       - name: ブランチを決定
         id: select-branch
